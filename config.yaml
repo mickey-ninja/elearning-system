@@ -1,0 +1,146 @@
+# ==================================================
+# E-ラーニングシステム 設定ファイル
+# ==================================================
+# このファイルはシステム全体の設定を一元管理します
+# テーマ追加、制限時間変更などはこのファイルのみの更新で対応可能です
+
+# ==================================================
+# 1. 管理者メール設定
+# ==================================================
+# メール通知の送信先を指定
+admins:
+  - admin1@company.onmicrosoft.com
+  - admin2@company.onmicrosoft.com
+  - admin3@company.onmicrosoft.com
+
+# ==================================================
+# 2. テーマ設定
+# ==================================================
+# 利用可能なすべてのテーマをここで定義
+# enabled: true でシステムに表示、false で隠す
+
+themes:
+  information_security:
+    # テーマの基本情報
+    title: "情報セキュリティ基礎"
+    description: "ランサムウェア攻撃とその対策について学びます"
+    enabled: true
+    
+    # 学習条件
+    time_limit_minutes: 15            # 解答制限時間（分）
+    passing_score: 80                 # 合格基準点（この点数未満は再受講対象）
+    
+    # ファイルパス（GitHub リポジトリ内のパス）
+    pdf_path: "assets/PDFs/information_security_textbook.pdf"
+    questions_path: "assets/questions/information_security.json"
+
+  # ========================================
+  # 将来的なテーマ例（disabled で追加）
+  # ========================================
+  xray_examination:
+    title: "X線作業者主任試験"
+    description: "X線機器の安全管理について学びます"
+    enabled: false                    # まだ有効化しない
+    time_limit_minutes: 30
+    passing_score: 75
+    pdf_path: "assets/PDFs/xray_textbook.pdf"
+    questions_path: "assets/questions/xray.json"
+
+  # 新しいテーマ追加時の例：
+  # data_protection:
+  #   title: "データ保護とプライバシー"
+  #   description: "GDPR とデータ保護について学びます"
+  #   enabled: false
+  #   time_limit_minutes: 20
+  #   passing_score: 75
+  #   pdf_path: "assets/PDFs/data_protection_textbook.pdf"
+  #   questions_path: "assets/questions/data_protection.json"
+
+# ==================================================
+# 3. メール通知設定
+# ==================================================
+email_settings:
+  # 受講開始時にメール通知を送信するか
+  send_on_start: true
+  
+  # 解答完了時にメール通知を送信するか（スコア付き）
+  send_on_completion: true
+  
+  # 再受講案内を送信するか（基準点未満の場合）
+  send_on_retake_needed: true
+  
+  # メール送信元（Gmail）
+  # 注：Streamlit Cloud の secrets.toml で GMAIL_USER, GMAIL_PASSWORD を設定
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+
+# ==================================================
+# 4. Google Sheets 設定
+# ==================================================
+google_sheets:
+  # スプレッドシート名（Gドライブ内）
+  spreadsheet_name: "responses"
+  
+  # シート名（スプレッドシート内）
+  sheet_name: "responses"
+  
+  # 注：Google Sheets へのアクセスは
+  # Streamlit Cloud の secrets.toml で google_service_account を設定
+
+# ==================================================
+# 5. 認証設定
+# ==================================================
+authentication:
+  # employees.csv のパス
+  employee_csv_path: "assets/employees.csv"
+  
+  # CSV に必須の列名
+  required_fields:
+    - "メールアドレス"
+    - "フルネーム"
+
+# ==================================================
+# 6. アプリケーション設定
+# ==================================================
+app:
+  title: "E-ラーニングシステム"
+  description: "Teams 内で利用できるオンライン学習システム"
+  
+  # ロゴパス（オプション）
+  logo_path: "assets/logo.png"
+  
+  # テーマ（light/dark）
+  theme: "light"
+  
+  # ページの最大幅
+  page_width: "wide"
+
+# ==================================================
+# 7. システム設定
+# ==================================================
+system:
+  # ログレベル（DEBUG/INFO/WARNING/ERROR）
+  log_level: "INFO"
+  
+  # デバッグモード（True の場合、追加のログ情報を表示）
+  debug_mode: false
+  
+  # PDF キャッシュ（True の場合、PDF をメモリにキャッシュ）
+  cache_pdfs: true
+
+# ==================================================
+# 変更履歴
+# ==================================================
+# 2025-11-20: 初版作成
+# 今後のテーマ追加時には、上記「2. テーマ設定」に
+# 新しいテーマを追加してください
+
+# ==================================================
+# テーマ追加時のチェックリスト
+# ==================================================
+# □ 教本 PDF を assets/PDFs/ に配置
+# □ 問題 JSON を assets/questions/ に配置
+# □ このファイルに新しいテーマを追加
+# □ GitHub に push
+# □ Streamlit Cloud が自動デプロイ
+# □ Teams 上で確認
